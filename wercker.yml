@@ -7,8 +7,44 @@ dev:
   steps:
     # first we want to run pip-install to install all the dependencies
     - pip-install
+    # 安装包
+    - install-packages:
+        packages: git
+    # 此步骤将下载指定版本的Hugo，并通过源代码运行，以生成您的站点的静态版本。然后可以使用其他步骤自动部署。
+    - arjen/hugo-build:
+    	version: "HEAD"
+    	theme: herring-cove
+        flags: --buildDrafts=true
+        prod_branches: master
     # then we want to run a wercker step that watches your files and reloads
     # when changes are detected.
     - internal/watch:
+    	name: download theme
+        	code: |
+            	$(git clone https://github.com/spf13/herring-cove ./themes/herring-cove)
         code: python app.py
         reload: true
+# Build definition
+build:
+	# The steps that will be executed on build
+  steps:
+    # A step that executes `pip install` command
+    - pip-install
+    # 安装包
+    - install-packages:
+        packages: git
+    # 此步骤将下载指定版本的Hugo，并通过源代码运行，以生成您的站点的静态版本。然后可以使用其他步骤自动部署。
+    - arjen/hugo-build:
+    	version: "HEAD"
+    	theme: herring-cove
+        flags: --buildDrafts=true
+        prod_branches: master
+    # A custom script step, name value is used in the UI
+    # and the code value contains the command that get executed
+    - script:
+    	name: download theme
+        code: |
+            $(git clone https://github.com/spf13/herring-cove ./themes/herring-cove)
+        name: python unit test
+        code: |
+          python app_test.py
