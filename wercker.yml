@@ -3,27 +3,28 @@
 box: python:2.7
 
 # in this dev clause we define the steps we want to take when developing.
-dev:
-  steps:
+#dev:
+  #steps:
     # first we want to run pip-install to install all the dependencies
-    - pip-install
+    #- pip-install
     # 安装包
-    - install-packages:
-        packages: git
+    #- install-packages:
+    #    packages: git
     # then we want to run a wercker step that watches your files and reloads
     # when changes are detected.
-    - script:
-    	name: download theme
-        	code: |
-            	$(git clone https://github.com/spf13/herring-cove ./themes/herring-cove)
-        code: python app.py
-        reload: true
+    #- internal/watch:
+    #	name: download theme
+    #    	code: |
+    #        	$(git clone https://github.com/spf13/herring-cove ./themes/herring-cove)
+    #- script:
+    #    code: python app.py
+    #    reload: true
     # 此步骤将下载指定版本的Hugo，并通过源代码运行，以生成您的站点的静态版本。然后可以使用其他步骤自动部署。
-    - arjen/hugo-build:
-        version: "HEAD"
-        theme: herring-cove
-        flags: --buildDrafts=true
-        prod_branches: master
+    #- arjen/hugo-build:
+    #    version: "HEAD"
+    #    theme: herring-cove
+    #    flags: --buildDrafts=true
+    #    prod_branches: master
 
 
 # Build definition
@@ -50,6 +51,7 @@ build:
         theme: herring-cove
         flags: --buildDrafts=true
         prod_branches: master
+
 #Deploy definition
 deploy:
   steps:
