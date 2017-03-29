@@ -12,7 +12,7 @@ dev:
         packages: git
     # then we want to run a wercker step that watches your files and reloads
     # when changes are detected.
-    - internal/watch:
+    - script:
     	name: download theme
         	code: |
             	$(git clone https://github.com/spf13/herring-cove ./themes/herring-cove)
